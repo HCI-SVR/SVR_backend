@@ -5,7 +5,8 @@ class Music(db.Model):
     name = db.Column(db.String(200), nullable=False)
     group_id = db.Column(db.Integer, nullable=True)
     uri = db.Column(db.String(200), nullable=False)
-    # count = db.Column(db.Integer, default=0)
+    image_key = db.Column(db.String(200), nullable=True)
+    singer = db.Column(db.String(100), nullable=False)
 
     def serialize(self):
         return {
@@ -13,7 +14,8 @@ class Music(db.Model):
             'name': self.name,
             'group_id': self.group_id,
             'uri': self.uri,
-            # 'count': self.count,
+            'image_key': self.image_key,
+            'singer': self.singer,
         }
 
 

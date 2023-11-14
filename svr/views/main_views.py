@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, redirect, url_for
 
 bp = Blueprint('main', __name__, url_prefix="/")
 
@@ -8,4 +8,4 @@ def hello_pybo():
 
 @bp.route('/')
 def index():
-    return 'index'
+    return redirect(url_for('music.findall'))
