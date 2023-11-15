@@ -31,9 +31,10 @@ def create_app(test_config = None):
     else:
         app.config.update(test_config)
 
-    from .views import main_views, heartrate_views
+    from .views import main_views, heartrate_views, music_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(heartrate_views.bp)
+    app.register_blueprint(music_views.bp)
 
 
     return app

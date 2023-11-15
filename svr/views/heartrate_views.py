@@ -1,13 +1,14 @@
 from flask import Blueprint, jsonify, request
 from svr.models import Music
-from svr import db
 
 bp = Blueprint('rate', __name__, url_prefix="/rate")
 
-count = {-1: 100}
+count = {}
+# 노래 재생 횟수 딕셔너리(key: music_id, value: count)
 
 @bp.route('/<int:heartrate>/')
-def musicList(heartrate):
+def music(heartrate):
+    # 심박수 그룹화
     if heartrate < 120:
         group_id = 1
     elif heartrate < 140:
@@ -18,44 +19,45 @@ def musicList(heartrate):
         group_id = 4
     else:
         group_id = 5
-    music_list = Music.query.all()
-    music_list = [music for music in music_list if music.group_id == group_id]
+
+    music_list = (Music.query.filter_by(group_id=group_id)
+                  .order_by(Music.id).all())
+    # music_list = Music.query.all().order_by(Music.id)
+    # music_list = [music for music in music_list if music.group_id == group_id]  # 그룹 노래 꺼내오기
+
+
+
+    # 재생되지 않은 노래가 있으면 그 노래를 선택하고 for문 break
+    selected_music = None
     for music in music_list:
-        if music.id in count.keys():
-            count[music.id] += 1
-        else:
-            count[music.id] = 1
+        if music.id not in count.keys():
+            selected_music = music
+            count[selected_music.id] = 1
+            break
+
+    # 재생되지 않는 노래가 있으면 노래 재생
+    if selected_music:
+        return jsonify(
+            {
+                "music": selected_music.serialize(),
+                "count": count
+            })
+
 
     min_count = min(count.values())
-
     min_music_list = []
     for music_id in count.keys():
         if count[music_id] == min_count:
             min_music_list.append(music_id)
+
     min_music_list.sort()
-    print(min_music_list)
-    # if min_music_list:
-    #     return jsonify(Music.query.get(min_music_list[1]).serialize())
-    # else:
-    #     return jsonify({})
+
     if min_music_list:
-        selected_music = Music.query.get(min_music_list[1])
+        selected_music = Music.query.get(min_music_list[0])
+        count[selected_music.id] += 1
         return jsonify({
             "music": selected_music.serialize(),
-            "count": count[selected_music.id]
+            "count": count
         })
     else:
         return jsonify({})
-
-
-
-    # count_list = [music.count for music in music_list]
-    # count_list.sort()
-    # count_min = count_list[0]
-    # music_list_min = [music for music in music_list if music.count == count_min]
-    # return jsonify([music.serialize() for music in music_list_min])
-    # return jsonify(music_list_min[0].serialize())
-    # return str(count_min)
-
-# @bp.route('/count/')
-# def show_count():
