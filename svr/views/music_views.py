@@ -82,28 +82,31 @@ def play(music_id):
     #     return jsonify({'error': 'Failed to play music'})
 
 # 노래 재생 api
-@bp.route('/play')
-def start_playback():
-    # 사용자의 Spotify 액세스 토큰 가져오기
-    access_token = session.get('spotify_token')
-
-    # Spotify API에 전송할 데이터 구성
-    endpoint = '/me/player/play'
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json',
-    }
-    data = {
-        "offset": {"uri": "spotify:track:3Ua0m0YmEjrMi9XErKcNiR"},  # 재생할 트랙의 Spotify URI
-        "position_ms": 0
-    }
-
-    # Spotify API에 PUT 요청 보내기
-    response = requests.put(f'{SPOTIFY_API_BASE_URL}{endpoint}', headers=headers, data=json.dumps(data))
-
-
-    # API 응답 확인
-    if response.status_code == 204:
-        return jsonify({"url": response.url})
-    else:
-        return f'Error: {response.status_code} - {response.text}'
+# @bp.route('/play')
+# def start_playback():
+#     # 사용자의 Spotify 액세스 토큰 가져오기
+#     access_token = session.get('spotify_token')
+#
+#     # Spotify API에 전송할 데이터 구성
+#     endpoint = '/me/player/play'
+#     headers = {
+#         'Authorization': f'Bearer {access_token}',
+#         'Content-Type': 'application/json',
+#     }
+#     # data = {
+#     #     "offset": {"uri": "spotify:track:3Ua0m0YmEjrMi9XErKcNiR"},  # 재생할 트랙의 Spotify URI
+#     #     "position_ms": 0
+#     # }
+#     data = {
+#         "uris": ["spotify:track:3Ua0m0YmEjrMi9XErKcNiR"]
+#     }
+#
+#     # Spotify API에 PUT 요청 보내기
+#     response = requests.put(f'{SPOTIFY_API_BASE_URL}{endpoint}', headers=headers, data=json.dumps(data))
+#
+#
+#     # API 응답 확인
+#     if response.status_code == 204:
+#         return jsonify({"url": response.url})
+#     else:
+#         return f'Error: {response.status_code} - {response.text}'
