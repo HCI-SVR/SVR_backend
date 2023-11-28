@@ -6,6 +6,7 @@ bp = Blueprint('rate', __name__, url_prefix="/rate")
 count = {}
 # 노래 재생 횟수 딕셔너리(key: music_id, value: count)
 
+
 @bp.route('/<int:heartrate>/')
 def music(heartrate):
     # 심박수 그룹화

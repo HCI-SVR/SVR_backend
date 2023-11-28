@@ -27,14 +27,15 @@ def create_app(test_config = None):
     migrate.init_app(app, db)
 
     if test_config is None:
-        app.config.from_pyfile("../config.py")
+        app.config.from_pyfile("config.py")
     else:
         app.config.update(test_config)
 
-    from .views import main_views, heartrate_views, music_views
+    from .views import main_views, heartrate_views, music_views, spotify
     app.register_blueprint(main_views.bp)
     app.register_blueprint(heartrate_views.bp)
     app.register_blueprint(music_views.bp)
+    app.register_blueprint(spotify.bp)
 
 
     return app
