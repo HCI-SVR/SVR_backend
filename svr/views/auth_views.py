@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, session, jsonify, request
+from flask import Blueprint, redirect, session, jsonify, request, url_for
 from svr import config
 import requests
 
@@ -43,8 +43,8 @@ def callback():
     # 토큰을 세션에 저장 (보안상의 이유로 실제 애플리케이션에서는 안전한 방법으로 저장해야 함)
     session['spotify_token'] = token_info['access_token']
 
-    return 'Successfully logged in! You can now make API requests.'
-
+    # return 'Successfully logged in! You can now make API requests.'
+    return redirect(url_for("auth.give_token"))
 @bp.route('/token/')
 def give_token():
     access_token = session.get('spotify_token')
