@@ -1,1 +1,8 @@
 config.py
+client.py
+spotify.py
+.cache
+
+svr.resources
+
+*.csv

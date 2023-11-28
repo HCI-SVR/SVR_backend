@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData, create_engine
 import os
 import pymysql
+from flask_cors import CORS
 
 naming_convention = {
     "ix": "ix_%(column_0_label)s",
@@ -18,6 +19,7 @@ migrate = Migrate()
 
 def create_app(test_config = None):
     app = Flask(__name__)
+    CORS(app)
     app.config.from_envvar('APP_CONFIG_FILE')
     app.config['JSON_AS_ASCII'] = False
 
@@ -31,11 +33,11 @@ def create_app(test_config = None):
     else:
         app.config.update(test_config)
 
-    from .views import main_views, heartrate_views, music_views, spotify
+    from .views import main_views, heartrate_views, music_views, auth_views
     app.register_blueprint(main_views.bp)
     app.register_blueprint(heartrate_views.bp)
     app.register_blueprint(music_views.bp)
-    app.register_blueprint(spotify.bp)
+    app.register_blueprint(auth_views.bp)
 
 
     return app
