@@ -1,9 +1,11 @@
 from flask import Blueprint, redirect, session, jsonify, request, url_for
-from svr import config
 import requests
+from svr import config_local as config  # 로컬 config
+# from svr import config    # ec2 config
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
+# Spotify 설정 정보
 SPOTIFY_AUTH_URL = config.SPOTIFY_AUTH_URL
 SPOTIFY_CLIENT_ID = config.SPOTIFY_CLIENT_ID
 SPOTIFY_CLIENT_SECRET = config.SPOTIFY_CLIENT_SECRET
@@ -53,25 +55,3 @@ def callback():
 def give_token():
     access_token = session.get('spotify_token')
     return jsonify({"access_token": access_token})
-
-@bp.route('/ready')
-def play_ready():
-
-    access_token = session.get('spotify_token')
-    print(access_token)
-    endpoint = '/me/player/devices'
-    headers = {
-        'Authorization': f'Bearer {access_token}',
-        'Content-Type': 'application/json',
-    }
-
-    response = requests.get(f'{SPOTIFY_API_BASE_URL}{endpoint}', headers=headers)
-
-    # return jsonify({
-    #     # "response": response.text,
-    #     "response1": response.raw
-    # })
-    if response.status_code == 200:
-        return jsonify(response.json())
-    else:
-        return f'Error: {response.status_code} - {response.text}'

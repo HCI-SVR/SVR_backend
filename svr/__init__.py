@@ -17,6 +17,7 @@ naming_convention = {
 db = SQLAlchemy(metadata=MetaData(naming_convention=naming_convention))
 migrate = Migrate()
 
+
 def create_app(test_config = None):
     app = Flask(__name__)
     CORS(app)
@@ -39,6 +40,5 @@ def create_app(test_config = None):
     app.register_blueprint(music_views.bp)
     app.register_blueprint(auth_views.bp)
     app.register_blueprint(hci_views.bp)
-
 
     return app

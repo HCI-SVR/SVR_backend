@@ -1,3 +1,4 @@
+# 임의 api 구현 파일
 from flask import Blueprint, jsonify
 
 bp = Blueprint('hci', __name__, url_prefix="/hci")
@@ -202,6 +203,9 @@ heartbeat_list = heartbeat_global
 calories_list = calories_global
 
 
+
+
+# 심박수 api
 @bp.route('/heartbeat')
 def heartbeat():
     global heartbeat_global
@@ -218,6 +222,7 @@ def heartbeat():
         return jsonify({"heartbeat": heartbeat_return})
 
 
+# 칼로리 api
 @bp.route('/calories')
 def calories():
     global calories_global
@@ -232,3 +237,11 @@ def calories():
         calories_return = calories_list[0:12]
         calories_list = calories_list[12:]
         return jsonify({"calories": calories_return})
+
+
+distance_global = []
+distance_list = []
+
+@bp.route('/distance/')
+def distance():
+    return
