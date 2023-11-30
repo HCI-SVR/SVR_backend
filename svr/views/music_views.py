@@ -131,7 +131,7 @@ def play(music_id):
     if response.status_code == 200 | response.status_code == 204:
 
         # 노래 재생하고 재생 상태 확인 함수 호출
-        return redirect(url_for('music.get_state'))
+        return jsonify(music.serialize())
     else:
         return f'Error: {response.status_code} - {response.text}'
 
@@ -149,7 +149,7 @@ def get_state():
     }
 
     response = requests.get(f'{SPOTIFY_API_BASE_URL}{endpoint}', headers=headers)
-    print(response.text)
+    # print(response.text)
 
     # 현재 재생 상태, 재생 노래의 정보
     return jsonify(response.json())
