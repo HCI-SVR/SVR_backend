@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, session, jsonify, request, url_for
 import requests
-from svr import config_local as config  # 로컬 config
-# from svr import config    # ec2 config
+# from svr import config_local as config  # 로컬 config
+from svr import config    # ec2 config
 
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
