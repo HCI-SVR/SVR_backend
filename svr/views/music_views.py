@@ -3,8 +3,8 @@ from svr import db
 from svr.models import Music
 import requests
 import json
-# from svr import config_local as config  # 로컬 config
-from svr import config    # ec2 config
+from svr import config_local as config  # 로컬 config
+# from svr import config    # ec2 config
 
 
 bp = Blueprint('music', __name__, url_prefix="/music")
@@ -12,33 +12,33 @@ SPOTIFY_API_BASE_URL = config.SPOTIFY_API_BASE_URL
 
 
 # 모든 노래 반환
-@bp.route('/all/')
+@bp.route('/all')
 def findall():
     music_list = Music.query.all()
     return jsonify([music.serialize() for music in music_list])
 
 
 # 노래 삽입 api (데이터 삽입하고 프로젝트 사용할거라 사용x)
-@bp.route('/insert/', methods=['POST'])
+@bp.route('/insert', methods=['POST'])
 def insert():
     params = request.get_json()
-    name = params['subject']
+    name = params['name']
     group_id = params['group_id']
     uri = params['uri']
     image_key = params['image_key']
     singer = params['singer']
 
-    music = Music(name=name, group_id = group_id,
+    music = Music(name=name, group_id=group_id,
                   uri=uri, image_key=image_key, singer=singer)
     db.session.add(music)
     db.session.commit()
 
-    return jsonify(music)
+    return jsonify(music.serialize())
 
 
 # 노래 재생 시작(데이터 구축 후에 사용)
-@bp.route('/<int:music_id>/')
-def play(music_id):
+# @bp.route('/<int:music_id>')
+def play2(music_id):
     music = Music.query.get(music_id)
     uri = music.uri
     # return uri
@@ -91,8 +91,10 @@ def play_ready():
 
 # 노래 재생 api
 # 로그인 후 받은 토큰 필요
-@bp.route('/play')
-def start_playback():
+@bp.route('/<int:music_id>')
+def play(music_id):
+    music = Music.query.get(music_id)
+    uri = music.uri
 
     # 사용자의 Spotify 액세스 토큰 가져오기
     access_token = session.get('spotify_token')
@@ -118,7 +120,7 @@ def start_playback():
 
     # 노래 재생 시 해당 노래 uri 필요함
     data = {
-        "uris": ["spotify:track:3Ua0m0YmEjrMi9XErKcNiR"],
+        "uris": [uri],
     }
 
     # Spotify API에 PUT 요청 보내기

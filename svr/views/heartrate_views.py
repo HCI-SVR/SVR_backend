@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, redirect, url_for
 from svr.models import Music
 import pandas as pd
 
@@ -38,11 +38,12 @@ def music(heartrate):
 
     # 재생되지 않는 노래가 있으면 노래 재생
     if selected_music:
-        return jsonify(
-            {
-                "music": selected_music.serialize(),
-                "count": count
-            })
+        # return jsonify(
+        #     {
+        #         "music": selected_music.serialize(),
+        #         "count": count
+        #     })
+        return redirect(url_for('music.play', music_id=selected_music.id))
 
     min_count = min(count.values())
     min_music_list = []
@@ -55,9 +56,10 @@ def music(heartrate):
     if min_music_list:
         selected_music = Music.query.get(min_music_list[0])
         count[selected_music.id] += 1
-        return jsonify({
-            "music": selected_music.serialize(),
-            "count": count
-        })
+        # return jsonify({
+        #     "music": selected_music.serialize(),
+        #     "count": count
+        # })
+        return redirect(url_for('music.play', music_id=selected_music.id))
     else:
         return jsonify({})
