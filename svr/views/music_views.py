@@ -3,8 +3,8 @@ from svr import db
 from svr.models import Music
 import requests
 import json
-from svr import config_local as config  # 로컬 config
-# from svr import config    # ec2 config
+# from svr import config_local as config  # 로컬 config
+from svr import config    # ec2 config
 
 
 bp = Blueprint('music', __name__, url_prefix="/music")
