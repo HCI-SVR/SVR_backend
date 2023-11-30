@@ -31,7 +31,7 @@ def get_info():
     calories_global = get_calories(group_id, weight)
     distance_global = get_distance(group_id)
 
-    return jsonify({"post": "성공"})
+    return jsonify({"response_code": 200})
 
 
 # 심박수 api
@@ -52,7 +52,7 @@ def heartbeat():
         return jsonify({"heartbeat": heartbeat_return})
 
 
-# 칼로리 api
+# 칼로리, 거리 조회 api
 @bp.route('/exercise')
 def exercise():
 
@@ -92,4 +92,4 @@ def reset():
 
     distance_list = distance_global
     calories_list = calories_global
-    return jsonify({"reset": "성공"})
+    return jsonify({"response_code": 200})

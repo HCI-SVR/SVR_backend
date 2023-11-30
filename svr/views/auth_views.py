@@ -42,7 +42,7 @@ def callback():
     # 토큰 엔드포인트에 POST 요청 보내기
     response = requests.post(SPOTIFY_TOKEN_URL, data=token_data)
     token_info = response.json()
-    print(token_info['access_token'])
+    # print(token_info['access_token'])
 
     # 토큰을 세션에 저장 (보안상의 이유로 실제 애플리케이션에서는 안전한 방법으로 저장해야 함)
     session['spotify_token'] = token_info['access_token']
@@ -51,7 +51,7 @@ def callback():
     return redirect(url_for("auth.give_token"))
 
 
-@bp.route('/token/')
+@bp.route('/token')
 def give_token():
     access_token = session.get('spotify_token')
     return jsonify({"access_token": access_token})
