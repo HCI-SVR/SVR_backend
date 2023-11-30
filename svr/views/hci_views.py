@@ -6,6 +6,7 @@ from svr.hci.distance import get_distance
 
 bp = Blueprint('hci', __name__, url_prefix="/hci")
 
+
 heartbeat_global = []
 calories_global = []
 distance_global = []
@@ -15,17 +16,30 @@ calories_list = []
 distance_list = []
 
 
-# 심박수 api
-@bp.route('/heartbeat', methods=['POST'])
-def heartbeat():
+@bp.route('/', methods=['POST'])
+def get_info():
+    global heartbeat_global
+    global calories_global
+    global distance_global
+
     params = request.get_json()
     group_id = params['group_id']
     age = params['age']
+    weight = params['weight']
+
+    heartbeat_global = get_heartbeat(group_id, age)
+    calories_global = get_calories(group_id, weight)
+    distance_global = get_distance(group_id)
+
+    return jsonify({"post": "성공"})
+
+
+# 심박수 api
+@bp.route('/heartbeat')
+def heartbeat():
 
     global heartbeat_global
     global heartbeat_list
-
-    heartbeat_global = get_heartbeat(group_id, age)
 
     if len(heartbeat_list) < 12:
         last = 12 - len(heartbeat_list)
@@ -39,19 +53,14 @@ def heartbeat():
 
 
 # 칼로리 api
-@bp.route('/exercise', methods=["POST"])
+@bp.route('/exercise')
 def exercise():
-    params = request.get_json()
-    group_id = params['group_id']
-    weight = params['weight']
 
     global calories_global
     global calories_list
-    calories_global = get_calories(group_id, weight)
 
     global distance_global
     global distance_list
-    distance_global = get_distance(group_id)
 
     if len(calories_list) < 12:
         last = 12 - len(calories_list)
@@ -72,3 +81,15 @@ def exercise():
             "calories": calories_return,
             "distances": distance_return
         })
+
+
+@bp.route('/reset')
+def reset():
+    global distance_global
+    global calories_global
+    global distance_list
+    global calories_list
+
+    distance_list = distance_global
+    calories_list = calories_global
+    return jsonify({"reset": "성공"})
