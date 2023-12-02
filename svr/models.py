@@ -8,6 +8,7 @@ class Music(db.Model):
     uri = db.Column(db.String(200), nullable=False)
     image_key = db.Column(db.String(200), nullable=True)
     singer = db.Column(db.String(100), nullable=False)
+    preview_url = db.Column(db.String(200), nullable=False)
 
     def serialize(self):
         return {
@@ -17,6 +18,7 @@ class Music(db.Model):
             'uri': self.uri,
             'image_key': self.image_key,
             'singer': self.singer,
+            'preview_url': self.preview_url,
         }
 
 

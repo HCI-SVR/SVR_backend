@@ -15,6 +15,10 @@ heartbeat_list = []
 calories_list = []
 distance_list = []
 
+group_id = 0
+age = 0
+weight = 0
+
 
 @bp.route('/', methods=['POST'])
 def get_info():
@@ -23,6 +27,9 @@ def get_info():
     global distance_global
 
     params = request.get_json()
+    global group_id
+    global age
+    global weight
     group_id = params['group_id']
     age = params['age']
     weight = params['weight']
@@ -32,6 +39,18 @@ def get_info():
     distance_global = get_distance(group_id)
 
     return jsonify({"response_code": 200})
+
+
+@bp.route('/player')
+def player():
+    global weight
+    global age
+    global group_id
+    return jsonify({
+        "weight": weight,
+        "age": age,
+        "group_id": group_id
+    })
 
 
 # 심박수 api
@@ -55,7 +74,6 @@ def heartbeat():
 # 칼로리, 거리 조회 api
 @bp.route('/exercise')
 def exercise():
-
     global calories_global
     global calories_list
 
@@ -92,4 +110,13 @@ def reset():
 
     distance_list = distance_global
     calories_list = calories_global
+    return jsonify({"response_code": 200})
+
+
+@bp.route('/hreset')
+def h_reset():
+    global heartbeat_global
+    global heartbeat_list
+
+    heartbeat_list = heartbeat_global
     return jsonify({"response_code": 200})

@@ -125,7 +125,7 @@ def play(music_id):
 
     # Spotify API에 PUT 요청 보내기
     response = requests.put(f'{SPOTIFY_API_BASE_URL}{endpoint}?device_id={device_id}', headers=headers, data=json.dumps(data))
-    print(response.text)
+    # print(response.text)
 
     # API 응답 확인
     if response.status_code == 200 | response.status_code == 204:

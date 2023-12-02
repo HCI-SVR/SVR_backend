@@ -57,3 +57,5 @@ def get_calories(strength, weight):
         start = start + (((num * MET) * 0.001 * weight) * 5) / 20
 
     return calories_list
+
+# print(get_calories(1, 60))
