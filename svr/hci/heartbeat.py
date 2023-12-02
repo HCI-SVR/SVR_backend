@@ -98,6 +98,6 @@ def get_heartbeat(group_id, age):
 # plt.title('Heartbeat Pattern')
 # plt.show()
 # print(heartbeat)
-print(get_heartbeat(3, 20))
+# print(get_heartbeat(3, 20))
 
 
