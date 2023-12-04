@@ -38,13 +38,10 @@ def music(heartrate):
 
     # 재생되지 않는 노래가 있으면 노래 재생
     if selected_music:
-        # return jsonify(
-        #     {
-        #         "music": selected_music.serialize(),
-        #         "count": count
-        #     })
-        return redirect(url_for('music.play', music_id=selected_music.id))
+        # return redirect(url_for('music.play', music_id=selected_music.id))
+        return jsonify(selected_music.serialize())
 
+    # selected_music이 없다면
     min_count = min(count.values())
     min_music_list = []
     for music_id in count.keys():
@@ -56,10 +53,8 @@ def music(heartrate):
     if min_music_list:
         selected_music = Music.query.get(min_music_list[0])
         count[selected_music.id] += 1
-        # return jsonify({
-        #     "music": selected_music.serialize(),
-        #     "count": count
-        # })
-        return redirect(url_for('music.play', music_id=selected_music.id))
+        # return redirect(url_for('music.play', music_id=selected_music.id))
+        return jsonify(selected_music.serialize())
     else:
         return jsonify({})
+

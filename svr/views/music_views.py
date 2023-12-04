@@ -27,9 +27,10 @@ def insert():
     uri = params['uri']
     image_key = params['image_key']
     singer = params['singer']
+    preview_url = params['preview_url']
 
-    music = Music(name=name, group_id=group_id,
-                  uri=uri, image_key=image_key, singer=singer)
+    music = Music(name=name, group_id=group_id, uri=uri,
+                  image_key=image_key, singer=singer, preview_url=preview_url)
     db.session.add(music)
     db.session.commit()
 

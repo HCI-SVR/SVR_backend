@@ -49,46 +49,38 @@ def get_heartbeat(group_id, age):
 
     current_heartbeat = 60  # 초기 심박수
     heartbeat_list.append(current_heartbeat)
-    count = 0
-    for i in range(20 * 60):
-        # 랜덤한 값으로 심박수를 조금씩 증가시킴
 
-        if i > 1000:
-            if np.random.rand() < 0.6 and current_heartbeat > 60:  # 10%의 확률로 감소하며 최소 심박수가 60임
-                decrement = np.random.uniform(0, 0.5)  # 필요에 따라 범위를 조절할 수 있습니다.
+    for i in range(20 * 60):
+        if i > 1000:    # 랜덤한 값으로 심박수를 조금씩 감소시킴
+            if np.random.rand() < 0.6 and current_heartbeat > 60:
+                decrement = np.random.uniform(0, 0.5)
                 current_heartbeat -= decrement
             else:
-                increment = np.random.uniform(0, 0.5)  # 필요에 따라 범위를 조절할 수 있습니다.
+                increment = np.random.uniform(0, 0.5)
                 current_heartbeat += increment
             heartbeat_list.append(current_heartbeat)
 
-        elif 400 <= i <= 1000:
-            if np.random.rand() < 0.5 and current_heartbeat > 60:  # 10%의 확률로 감소하며 최소 심박수가 60임
-                decrement = np.random.uniform(0, 0.5)  # 필요에 따라 범위를 조절할 수 있습니다.
+        elif 400 <= i <= 1000:      # max 심박수 값에서 랜덤 증감
+            if np.random.rand() < 0.5 and current_heartbeat > 60:
+                decrement = np.random.uniform(0, 0.5)
                 current_heartbeat -= decrement
             else:
-                increment = np.random.uniform(0, 0.5)  # 필요에 따라 범위를 조절할 수 있습니다.
+                increment = np.random.uniform(0, 0.5)
                 current_heartbeat += increment
             heartbeat_list.append(current_heartbeat)
 
         else:
-            # 일정 확률로 심박수를 감소시킴
-            if np.random.rand() < 0.2 and current_heartbeat > 60:  # 10%의 확률로 감소하며 최소 심박수가 60임
-                decrement = np.random.uniform(0, 0.5)  # 필요에 따라 범위를 조절할 수 있습니다.
+            # 랜덤한 값으로 심박수를 조금씩 증가시킴
+            if np.random.rand() < 0.2 and current_heartbeat > 60:
+                decrement = np.random.uniform(0, 0.5)
                 current_heartbeat -= decrement
             else:
-                increment = np.random.uniform(start, end)  # 필요에 따라 범위를 조절할 수 있습니다.
+                increment = np.random.uniform(start, end)
                 current_heartbeat += increment
             heartbeat_list.append(current_heartbeat)
 
-        # 심박수가 지정된 범위 내에 있도록 보장
-        # heartbeat_list.append(np.random.randint(round(max_heartbeat * start), round(max_heartbeat * end)))
-
-        if current_heartbeat > max_heartbeat:
-            count += 1
-    # increment_per_sample = (180 - 60) / (20 * 60)
-    # heartbeat_list = [60 + i * increment_per_sample for i in range(20 * 60)]
     return heartbeat_list
+
 
 
 # heartbeat = get_heartbeat(3, 20)
